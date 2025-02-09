@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>剪刀石頭布遊戲</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background-image: url(./img/backgroud.jpg);
+      background-size: cover;
+      padding: 50px;
+      color: green;
+    }
+
+    .container {
+      width: 1000px;
+      height: 530px;
+      background: white; 
+      padding: 20px;
+      border-radius: 10px;
+      margin: auto;
+      box-shadow: 0 4px 8px gray;
+      border: 5px solid darkred;
+    }
+
+    .result {
+      font-size: 20px;
+      margin: 20px 0;
+      color: darkred;
+    }
+
+    .choices {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+
+    .choices img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border: 5px solid darkred;
+      
+    }
+
+    .choices img:hover {
+      transform: scale(0.95);
+    }
+
+    .reset-btn {
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid darkred;
+    }
+
+    .reset-btn:hover {
+      background-color: darkgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>剪刀石頭布</h1>
+    <div class="choices">
+      <img src="./img/scissors.jpg" alt="" class="choice" data-choice="剪刀">
+      <img src="./img/stone2.jpg" alt="" class="choice" data-choice="石頭">
+      <img src="./img/paper.jpg" alt="" class="choice" data-choice="布">
+
+    </div>
+    <div class="result">選擇招式</div>
+    <button class="reset-btn">Reset</button>
+  </div>
+
+  <script>
+    // 全域變數
+    const choices = document.querySelectorAll('.choice');
+    const result = document.querySelector('.result');
+    const resetBtn = document.querySelector('.reset-btn');
+    
+
+    // 玩家和電腦的選擇
+    let playerChoice = '';
+    let computerChoice = '';
+
+    // 電腦隨機選擇
+    function getComputerChoice() {
+      const options = ['剪刀', '石頭', '布'];
+      const randomIndex = Math.floor(Math.random() * options.length);
+      return options[randomIndex];
+    }
+
+    // 決定勝負邏輯
+    function determineWinner(player, computer) {
+      if (player === computer) {
+        return '平手！';
+      } else if (
+        (player === '剪刀' && computer === '布') ||
+        (player === '石頭' && computer === '剪刀') ||
+        (player === '布' && computer === '石頭')
+      ) {
+        return '你贏了！';
+      } else {
+        return '你輸了！';
+      }
+    }
+
+    // 玩家選擇事件監聽
+    choices.forEach(choice => {
+      choice.addEventListener('click', () => {
+        playerChoice = choice.getAttribute('data-choice');
+        computerChoice = getComputerChoice();
+
+        const resultText = `
+          你選了: ${playerChoice} <br>
+          電腦選了: ${computerChoice} <br>
+          結果: ${determineWinner(playerChoice, computerChoice)}
+        `;
+        result.innerHTML = resultText;
+      });
+    });
+
+    // 重置遊戲
+    resetBtn.addEventListener('click', () => {
+      result.textContent = '選擇招式';
+      playerChoice = '';
+      computerChoice = '';
+    });
+  </script>
+</body>
+
+</html>
